@@ -1,15 +1,15 @@
 seed:
-	knex seed:run
+	npm run knex seed:run
 
 migrate:
-	knex migrate:latest
+	npm run knex migrate:latest
 
 dbsetup:
 	make migrate
 	make seed
 
 rollback:
-	knex migrate:rollback
+	npm run knex migrate:rollback
 
 run:
 	nodemon app.js
