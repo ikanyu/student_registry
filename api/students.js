@@ -1,9 +1,9 @@
-const express = require('express')
+const express = require("express")
 const router = express.Router()
 
-const Student = require('../models/Student')
+const Student = require("../models/Student")
 
-router.get('/students', (req, res) => {
+router.get("/students", (req, res) => {
   // console.log("hello");
   console.log(req.query);
   res.send(req.query.email);
