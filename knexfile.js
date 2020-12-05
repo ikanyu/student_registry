@@ -10,6 +10,9 @@ module.exports = {
     migrations: {
       directory: __dirname + "/db/migrations"
     },
+    seeds: {
+      directory: __dirname + "/db/seeds/development"
+    },
     typeCast: function(field, next) {
       if (field.type == "TINY" && field.length == 1) {
           return (field.string() == "1"); // 1 = true, 0 = false
