@@ -34,13 +34,14 @@ router.get("/commonstudents", async (req, res) => {
 
 router.post("/suspend", async (req, res) => {
   // TODO: invalid student email
-  let requestBody = req.body;
+  let { student } = req.body;
 
   await Student.query()
     .patch({suspended: true})
-    .where('email', requestBody.student)
+    .where('email', student)
 
   res.status(204);
+  res.json(null);
 })
 
 module.exports = {
