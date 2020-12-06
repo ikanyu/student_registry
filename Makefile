@@ -4,9 +4,10 @@ seed:
 migrate:
 	npm run knex migrate:latest
 
-dbsetup:
+setuprun:
 	make migrate
 	make seed
+	make run
 
 rollback:
 	npm run knex migrate:rollback
