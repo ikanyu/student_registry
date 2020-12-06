@@ -27,9 +27,7 @@ router.get("/commonstudents", async (req, res) => {
       .groupBy('student_id')
       .having('count(*)', '=', teachersEmail.length)
 
-    students = await Student
-      .query()
-      .whereIn('id', teacher.map(student => student.student_id))
+    students = await Student.query().whereIn('id', teacher.map(student => student.student_id))
   }
   res.status(200);
   res.json(_.map(students, 'email'));
@@ -40,10 +38,7 @@ router.post("/suspend", async (req, res) => {
   // TODO: invalid student email
   let { student } = req.body;
 
-  await Student
-    .query()
-    .patch({suspended: true})
-    .where('email', student)
+  await Student.query().patch({suspended: true}).where('email', student)
 
   res.status(204).json(null);
 })
@@ -51,19 +46,14 @@ router.post("/suspend", async (req, res) => {
 router.post("/register", async (req, res) => {
   let { teacher, students } = req.body;
   let studentRecord;
-  let teacherRecord = await Teacher.query().where('email', teacher);
+  let teacherRecord = await Teacher.query().findOne({'email': teacher});
 
   for(student of students) {
-    studentRecord = await Student
-      .query()
-      .where('email', student)
-      .first()
-
+    studentRecord = await Student.query().where('email', student).first()
     if(!studentRecord) { studentRecord = await Student.query().insert({email: student}) }
 
     let jointStudentRecord = await Teacher.relatedQuery('students').for(teacherRecord).where('email', student).first()
-
-    if(!jointStudentRecord) { await Teacher.relatedQuery('students').for(teacherRecord).relate(studentRecord);}
+    if(!jointStudentRecord) { await Teacher.relatedQuery('students').for(teacherRecord).relate(studentRecord); }
   }
 
   res.status(204).json(null);
