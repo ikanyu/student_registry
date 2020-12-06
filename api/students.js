@@ -31,6 +31,18 @@ router.get("/commonstudents", async (req, res) => {
   res.json(lodash.map(students, 'email'));
 })
 
+
+router.post("/suspend", async (req, res) => {
+  // TODO: invalid student email
+  let requestBody = req.body;
+
+  await Student.query()
+    .patch({suspended: true})
+    .where('email', requestBody.student)
+
+  res.status(204);
+})
+
 module.exports = {
   router: router
 }

@@ -7,6 +7,7 @@ var students = require("./api/students");
 const app = express();
 
 // Endpoints
+app.use(express.json());
 app.use("/api", students.router);
 
 app.listen(port, () => {
