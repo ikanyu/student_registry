@@ -14,8 +14,7 @@ router.get("/commonstudents", async (req, res) => {
     teachers = await Teacher.query()
       .where('email', teachersEmail)
       .withGraphFetched('students')
-
-    res.json(lodash.map(teachers[0].students, 'email'));
+    students = teachers[0].students;
   } else {
     teacher = await Teacher.query()
       .select('student_id')
@@ -27,9 +26,9 @@ router.get("/commonstudents", async (req, res) => {
 
     students = await Student.query()
       .whereIn('id', teacher.map(student => student.student_id))
-
-    res.json(lodash.map(students, 'email'));
   }
+  res.status(200);
+  res.json(lodash.map(students, 'email'));
 })
 
 module.exports = {
