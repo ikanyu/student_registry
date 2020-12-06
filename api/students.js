@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router()
 var lodash = require('lodash');
+const knex = require("../db/knex");
 
 const Student = require("../models/Student");
 const Teacher = require("../models/Teacher");
@@ -11,12 +12,14 @@ router.get("/commonstudents", async (req, res) => {
   let teachersEmail = req.query.teacher;
 
   if (typeof teachersEmail === 'string' || teachersEmail instanceof String) {
-    teachers = await Teacher.query()
+    teachers = await Teacher
+      .query()
       .where('email', teachersEmail)
       .withGraphFetched('students')
     students = teachers[0].students;
   } else {
-    teacher = await Teacher.query()
+    teacher = await Teacher
+      .query()
       .select('student_id')
       .count()
       .join('student_teacher', 'teachers.id', '=', 'student_teacher.teacher_id')
@@ -24,7 +27,8 @@ router.get("/commonstudents", async (req, res) => {
       .groupBy('student_id')
       .having('count(*)', '=', teachersEmail.length)
 
-    students = await Student.query()
+    students = await Student
+      .query()
       .whereIn('id', teacher.map(student => student.student_id))
   }
   res.status(200);
@@ -36,12 +40,34 @@ router.post("/suspend", async (req, res) => {
   // TODO: invalid student email
   let { student } = req.body;
 
-  await Student.query()
+  await Student
+    .query()
     .patch({suspended: true})
     .where('email', student)
 
-  res.status(204);
-  res.json(null);
+  res.status(204).json(null);
+})
+
+router.post("/register", async (req, res) => {
+  let { teacher, students } = req.body;
+  let studentArray;
+  let studentRecord;
+  let teacherRecord = await Teacher.query().where('email', teacher);
+
+  for(student of students) {
+    studentRecord = await Student
+      .query()
+      .where('email', student)
+      .first()
+
+    if(!studentRecord) { studentRecord = await Student.query().insert({email: student}) }
+
+    let jointStudentRecord = await Teacher.relatedQuery('students').for(teacherRecord).where('email', student).first()
+
+    if(!jointStudentRecord) { await Teacher.relatedQuery('students').for(teacherRecord).relate(studentRecord);}
+  }
+
+  res.status(204).json(null);
 })
 
 module.exports = {
