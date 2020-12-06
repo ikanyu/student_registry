@@ -18,8 +18,8 @@ class Teacher extends Model {
               join: {
                 from: "teachers.id",
                 through: {
-                  from: "teachers_students.teacher_id",
-                  to: "teachers_students.student_id"
+                  from: "student_teacher.teacher_id",
+                  to: "student_teacher.student_id"
                 },
                 to: "students.id"
               }

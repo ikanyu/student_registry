@@ -1,6 +1,6 @@
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('teachers_students').del()
+  return knex('student_teacher').del()
     .then(function () {
       let teacherId1, teacherId2, studentId1, studentId2, studentId3;
 
@@ -11,10 +11,11 @@ exports.seed = function(knex, Promise) {
       studentId2 = knex('students').where({email: 'studenthon@gmail.com'}).select('id');
       studentId3 = knex('students').where({email: 'studentalan@gmail.com'}).select('id');
 
-      return knex('teachers_students').insert([
+      return knex('student_teacher').insert([
         { teacher_id: teacherId1, student_id: studentId1  },
         { teacher_id: teacherId1, student_id: studentId3  },
-        { teacher_id: teacherId2, student_id: studentId2  }
+        { teacher_id: teacherId2, student_id: studentId2  },
+        { teacher_id: teacherId2, student_id: studentId1  }
       ]);
     });
 };
