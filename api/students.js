@@ -12,10 +12,7 @@ router.get("/commonstudents", async (req, res) => {
   let teachersEmail = req.query.teacher;
 
   if (typeof teachersEmail === 'string' || teachersEmail instanceof String) {
-    teachers = await Teacher
-      .query()
-      .where('email', teachersEmail)
-      .withGraphFetched('students')
+    teachers = await Teacher.query().where('email', teachersEmail).withGraphFetched('students')
     students = teachers[0].students;
   } else {
     teacher = await Teacher
@@ -29,8 +26,7 @@ router.get("/commonstudents", async (req, res) => {
 
     students = await Student.query().whereIn('id', teacher.map(student => student.student_id))
   }
-  res.status(200);
-  res.json(_.map(students, 'email'));
+  res.status(200).json(_.map(students, 'email'));
 })
 
 
