@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router()
+var lodash = require('lodash');
 
 const Student = require("../models/Student");
 const Teacher = require("../models/Teacher");
@@ -14,7 +15,7 @@ router.get("/commonstudents", async (req, res) => {
       .where('email', teachersEmail)
       .withGraphFetched('students')
 
-    res.json(teachers[0].students.map(student => student.email))
+    res.json(lodash.map(teachers[0].students, 'email'));
   } else {
     teacher = await Teacher.query()
       .select('student_id')
@@ -24,11 +25,10 @@ router.get("/commonstudents", async (req, res) => {
       .groupBy('student_id')
       .having('count(*)', '=', teachersEmail.length)
 
-    console.log(teachers);
     students = await Student.query()
       .whereIn('id', teacher.map(student => student.student_id))
 
-    res.json(students.map(student => student.email))
+    res.json(lodash.map(students, 'email'));
   }
 })
 
