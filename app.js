@@ -1,4 +1,4 @@
-var lodash = require('lodash');
+const lodash = require('lodash');
 const express = require("express");
 const port = process.env.PORT || 3000;
 
