@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router()
-var lodash = require('lodash');
+const _ = require('lodash');
 const knex = require("../db/knex");
 
 const Student = require("../models/Student");
@@ -32,7 +32,7 @@ router.get("/commonstudents", async (req, res) => {
       .whereIn('id', teacher.map(student => student.student_id))
   }
   res.status(200);
-  res.json(lodash.map(students, 'email'));
+  res.json(_.map(students, 'email'));
 })
 
 
@@ -50,7 +50,6 @@ router.post("/suspend", async (req, res) => {
 
 router.post("/register", async (req, res) => {
   let { teacher, students } = req.body;
-  let studentArray;
   let studentRecord;
   let teacherRecord = await Teacher.query().where('email', teacher);
 
@@ -68,6 +67,29 @@ router.post("/register", async (req, res) => {
   }
 
   res.status(204).json(null);
+})
+
+router.post("/retrievefornotifications", async (req, res) => {
+  // Assumption: all emails are valid students
+  let { teacher, notification } = req.body;
+  let finalList;
+  const emails = notification.match(/(?<=@)[^\s\,]+/g);
+
+  let teacherSubQuery = await Teacher.query().where('email', teacher);
+  let teachersStudents = await Teacher.relatedQuery('students').for(teacherSubQuery).where('suspended', false);
+  let teachersStudentsArray = _.map(teachersStudents, 'email');
+
+  if (emails) {
+    let suspendedStudent = await Student.query().where('suspended', true).whereIn('email', emails);
+    let suspendedStudentArray = _.map(suspendedStudent, 'email');
+    let cleanList = emails.filter((email) => !suspendedStudentArray.includes(email));
+
+    finalList = _.union(teachersStudentsArray, cleanList);
+  } else {
+    finalList = teachersStudentsArray;
+  }
+
+  res.status(200).json(finalList);
 })
 
 module.exports = {
