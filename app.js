@@ -1,15 +1,11 @@
 const lodash = require('lodash');
 const express = require("express");
-const port = process.env.PORT || 3000;
+const app = express();
 
 var students = require("./api/students");
-
-const app = express();
 
 // Endpoints
 app.use(express.json());
 app.use("/api", students.router);
 
-app.listen(port, () => {
-	console.log("Listening on port: " + port);
-})
+module.exports = app;

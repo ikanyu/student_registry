@@ -13,4 +13,4 @@ rollback:
 	npm run knex migrate:rollback
 
 run:
-	nodemon app.js
+	nodemon server.js
