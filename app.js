@@ -1,4 +1,3 @@
-const lodash = require('lodash');
 const express = require("express");
 const app = express();
 
