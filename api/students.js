@@ -31,7 +31,6 @@ router.get("/commonstudents", async (req, res) => {
   res.status(200).json(_.map(students, 'email'));
 })
 
-
 router.post("/suspend", async (req, res) => {
   let { student } = req.body;
 
@@ -89,6 +88,4 @@ router.post("/retrievefornotifications", async (req, res) => {
   res.status(200).json(finalList);
 })
 
-module.exports = {
-  router: router
-}
+module.exports = router;
