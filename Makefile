@@ -5,6 +5,7 @@ migrate:
 	npm run knex migrate:latest
 
 setuprun:
+	npm i
 	make migrate
 	make seed
 	make run

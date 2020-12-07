@@ -4,7 +4,8 @@ module.exports = {
     connection: {
       host : "127.0.0.1",
       user : "root",
-      password : "",
+      password : "password",
+      port: "3307",
       database : "student_registry_development"
     },
     migrations: {

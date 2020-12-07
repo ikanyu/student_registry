@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  mysql_db_container:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: student_registry_development
+    ports:
+      - 3307:3306
+    volumes:
+      - mysql_db_data_container:/var/lib/mysql
+      - ./init.sql:/data/application/init.sql
+    command: --init-file /data/application/init.sql
+
+volumes:
+  mysql_db_data_container:
