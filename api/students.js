@@ -11,6 +11,8 @@ router.get("/commonstudents", async (req, res) => {
   let students;
   let teachersEmail = req.query.teacher;
 
+  if(!teachersEmail) { return res.status(422).json({message: 'Teacher attribute is missing'}) };
+
   if (typeof teachersEmail === 'string' || teachersEmail instanceof String) {
     teachers = await Teacher.query().where('email', teachersEmail).withGraphFetched('students')
     students = teachers[0].students;
@@ -31,9 +33,12 @@ router.get("/commonstudents", async (req, res) => {
 
 
 router.post("/suspend", async (req, res) => {
-  // TODO: invalid student email
   let { student } = req.body;
 
+  if(!student) { return res.status(422).json({message: 'Student attribute is missing'}) }
+
+  studentRecord = await Student.query().where('email', student).first()
+  if(!studentRecord) { return res.status(404).json({message: "Student not found"}) }
   await Student.query().patch({suspended: true}).where('email', student)
 
   res.status(204).json(null);
@@ -41,6 +46,9 @@ router.post("/suspend", async (req, res) => {
 
 router.post("/register", async (req, res) => {
   let { teacher, students } = req.body;
+
+  if(!teacher || !students) { return res.status(422).json({message: 'Teacher or student attribute is missing'}) }
+
   let studentRecord;
   let teacherRecord = await Teacher.query().findOne({'email': teacher});
 
@@ -58,6 +66,9 @@ router.post("/register", async (req, res) => {
 router.post("/retrievefornotifications", async (req, res) => {
   // Assumption: all emails are valid students
   let { teacher, notification } = req.body;
+
+  if(!teacher || !notification) { return res.status(422).json({ message: 'Teacher or notification attribute is missing'}) };
+
   let finalList;
   const emails = notification.match(/(?<=@)[^\s\,]+/g);
 

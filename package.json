@@ -11,7 +11,8 @@
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "/node_modules/"
-    ]
+    ],
+    "verbose": true
   },
   "keywords": [],
   "author": "",
