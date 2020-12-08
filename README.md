@@ -3,7 +3,7 @@ This Node project is created based on these [requirements](https://gist.github.c
 
 ## Setup local environment
 **Prerequisite**:
-- Docker: mysql setup and database creation required for the API
+- Docker: Mysql setup and database creation required for the API. Does not include the setup of Node API.
 - Node
 
 ```sh
