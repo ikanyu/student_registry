@@ -44,7 +44,7 @@ router.post("/retrievefornotifications", async (req, res) => {
 
   if(!teacher || !notification) { return res.status(422).json({ message: 'Teacher or notification attribute is missing'}) };
 
-  let finalList = await notifiedStudent;
+  let finalList = await notifiedStudent(teacher, notification);
 
   res.status(200).json(finalList);
 })

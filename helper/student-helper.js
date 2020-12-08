@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const Student = require("../models/Student");
 const Teacher = require("../models/Teacher");
 
@@ -46,7 +47,6 @@ async function notifiedStudent(teacher, notification) {
   let teacherSubQuery = await Teacher.query().where('email', teacher);
   let teachersStudents = await Teacher.relatedQuery('students').for(teacherSubQuery).where('suspended', false);
   let teachersStudentsArray = _.map(teachersStudents, 'email');
-
   if (emails) {
     let suspendedStudent = await Student.query().where('suspended', true).whereIn('email', emails);
     let suspendedStudentArray = _.map(suspendedStudent, 'email');

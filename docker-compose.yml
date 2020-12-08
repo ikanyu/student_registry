@@ -5,7 +5,6 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: student_registry_development
     ports:
       - 3307:3306
     volumes:
