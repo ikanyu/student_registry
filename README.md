@@ -15,5 +15,5 @@ $ make setuprun
 
 ### Run tests
 ```sh
-$ npm run test
+$ npm test
 ```
