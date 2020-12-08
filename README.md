@@ -2,7 +2,9 @@
 This Node project is created based on these [requirements](https://gist.github.com/d3hiring/4d1415d445033d316c36a56f0953f4ef).
 
 ## Setup local environment
-**Prerequisite**: Docker is installed on your machine.
+**Prerequisite**:
+- Docker
+- Node
 
 ```sh
 $ docker-compose up
