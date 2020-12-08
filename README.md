@@ -3,16 +3,25 @@ This Node project is created based on these [requirements](https://gist.github.c
 
 ## Setup local environment
 **Prerequisite**:
-- Docker
+- Docker: mysql setup and database creation required for the API
 - Node
 
 ```sh
 $ docker-compose up
 ```
 
-For fastest setup, this command runs the migration, seeds the database and spins up a server
+**Fastest setup**
+This make command runs the migration, seeds the database and spins up a server
 ```sh
 $ make setuprun
+```
+**Step by step**
+If you prefer to run step at a time, run the following commands
+```sh
+$ npm i             # runs npm install
+$ make migrate      # runs migration
+$ make seed         # seeds the database
+$ make run          # starts a server
 ```
 
 ### Run tests
