@@ -11,7 +11,7 @@ $ docker-compose up
 ```
 
 **Fastest setup**
-This make command runs the migration, seeds the database and spins up a server
+This `make` command runs the migration, seeds the database and spins up a server
 ```sh
 $ make setuprun
 ```
